@@ -142,7 +142,7 @@ const companies = [
 async function main() {
   try {
     await mongoose.connect(
-      `mongodb+srv://sukhjinder:ZqaEjKVorfBHmUBi@cluster0.1hqidqg.mongodb.net/?retryWrites=true&w=majority`
+      `mongodb+srv://username:password@cluster0.1hqidqg.mongodb.net/?retryWrites=true&w=majority`
     );
     await Company.deleteMany({});
     await Advert.deleteMany({});

@@ -1,52 +1,44 @@
 const Company = require("../models/Company");
+const Advert = require("../models/Advert");
 
 const search = async (req, res, next) => {
   const { search } = req.query;
 
-  const result = await Company.aggregate([
+  const result = await Advert.aggregate([
     {
       $lookup: {
-        from: "adverts",
-        localField: "_id",
-        foreignField: "company",
-        as: "adverts",
+        from: "companies",
+        localField: "company",
+        foreignField: "_id",
+        as: "company",
       },
     },
-    // comment out this line if you want to show companies with no ads
-    { $unwind: "$adverts" },
-    // {
-    // uncomment this If you want to show companies with no ads
-    //   $unwind: {
-    //     path: "$adverts",
-    //     preserveNullAndEmptyArrays: true,
-    //   },
-    // },
+    { $unwind: "$company" },
     {
       $match: {
         $or: [
           {
-            name: { $regex: search, $options: "i" },
+            primaryText: { $regex: search, $options: "i" },
           },
           {
-            "adverts.primaryText": { $regex: search, $options: "i" },
+            headline: { $regex: search, $options: "i" },
           },
           {
-            "adverts.headline": { $regex: search, $options: "i" },
+            description: { $regex: search, $options: "i" },
           },
           {
-            "adverts.description": { $regex: search, $options: "i" },
+            "company.name": { $regex: search, $options: "i" },
           },
         ],
       },
     },
     {
       $project: {
-        _id: 1,
-        name: 1,
-        advert: "$adverts",
+        "company.adverts": 0,
       },
     },
   ]);
+
   return res.status(200).json(result);
 };
 

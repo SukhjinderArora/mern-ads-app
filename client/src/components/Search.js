@@ -61,38 +61,36 @@ const Search = () => {
           </span>
         </div>
       )}
-      <div>
-        {searchTerm && (
-          <div className={styles.grid}>
-            {searchResults.map((result, index) => (
-              <div key={index} className={styles.gridItem}>
-                <h1 className={styles.companyName}>{result.name}</h1>
-                <p className={styles.adText}>{result.advert.primaryText}</p>
-                <div className={styles.imageContainer}>
-                  <img
-                    src={result.advert.imageURL}
-                    className={styles.adImage}
-                    alt={result.name}
-                  />
-                </div>
-                <div className={styles.ctaContainer}>
-                  <div className={styles.adDescription}>
-                    <h2 className={styles.adHeadline}>
-                      {result.advert.headline}
-                    </h2>
-                    <p>{result.advert.description}</p>
+      {!isLoading && (
+        <div>
+          {searchTerm && (
+            <div className={styles.grid}>
+              {searchResults.map((result, index) => (
+                <div key={index} className={styles.gridItem}>
+                  <h1 className={styles.companyName}>{result.company.name}</h1>
+                  <p className={styles.adText}>{result.primaryText}</p>
+                  <div className={styles.imageContainer}>
+                    <img
+                      src={result.imageURL}
+                      className={styles.adImage}
+                      alt={result.company.name}
+                    />
                   </div>
-                  <div className={styles.ctaButtonContainer}>
-                    <button className={styles.ctaButton}>
-                      {result.advert.cta}
-                    </button>
+                  <div className={styles.ctaContainer}>
+                    <div className={styles.adDescription}>
+                      <h2 className={styles.adHeadline}>{result.headline}</h2>
+                      <p>{result.description}</p>
+                    </div>
+                    <div className={styles.ctaButtonContainer}>
+                      <button className={styles.ctaButton}>{result.cta}</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
